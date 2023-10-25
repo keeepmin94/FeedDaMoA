@@ -8,10 +8,9 @@ import { UserService } from './user/user.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
-import { AuthService } from './auth/auth.service';
 import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
-import { AuthController } from './auth/auth.controller';
+
 
 @Module({
   imports: [

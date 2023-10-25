@@ -1,4 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post, ValidationPipe} from '@nestjs/common';
+import { UserService } from './user.service';
+import { RegisterUserDto } from './dto/registerUser.dto';
 
-@Controller('user')
-export class UserController {}
+@Controller('users')
+export class UserController {
+    constructor(private userService: UserService){}
+
+    @Post('/signup')
+    signUp(@Body(ValidationPipe) registerUserDto: RegisterUserDto): Promise<void> {
+        return this.userService.signUp(registerUserDto)
+    }
+}

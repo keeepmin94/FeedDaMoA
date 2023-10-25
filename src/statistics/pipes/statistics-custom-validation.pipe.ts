@@ -55,16 +55,36 @@ export class StatisticsCustomValidationPipe implements PipeTransform {
     const limit = type === 'date' ? 30 : 7; // date시 최대 30일 조회 | hour시 최대 7일 조회
 
     if (dayDiff > limit) {
-      const message = `${type} 설정시 최대 기간은 ${limit}입니다.`;
+      const message = `${type} 설정시 최대 기간은 ${limit}일 입니다.`;
       throw new BadRequestException(message);
     }
 
     return;
   }
 
+  private getOneSomeDate(days: number) {
+    const currentDate = new Date(); // 현재 날짜 및 시간을 얻음
+    const getSomeDate = new Date(currentDate);
+    getSomeDate.setDate(currentDate.getDate() - days); // 일주일 전 날짜 계산
+
+    // 날짜를 "yyyy-MM-dd" 형식의 문자열로 변환
+    const year = getSomeDate.getFullYear();
+    const month = String(getSomeDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+    const day = String(getSomeDate.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+  }
+
   transform(value_: any, metadata: ArgumentMetadata) {
     if (metadata.type !== 'query') return value_;
-    const { type, start, end, value } = value_;
+    // const { type, start, end, value } = value_;
+    const type = value_.type;
+    const start = value_.start === '' ? this.getOneSomeDate(7) : value_.start;
+    const end = value_.end === '' ? this.getOneSomeDate(0) : value_.start;
+    const value = value_.value === '' ? 'count' : value_.value;
+
+    // 비어있는 Param들 여기서 default값 주는게 맞을까?
 
     // type ==> [date, hour] 중에 하나인지 확인
     if (!this.isOptionValid(type.toUpperCase(), 'type'))
@@ -83,9 +103,10 @@ export class StatisticsCustomValidationPipe implements PipeTransform {
     this.validateCalculate(start, end, type);
 
     value_.type = type.toUpperCase();
+    value_.start = start;
+    value_.end = end;
     value_.value = value.toUpperCase();
 
-    console.log(value_);
     return value_;
   }
 }

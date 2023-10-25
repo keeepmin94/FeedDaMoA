@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
@@ -13,8 +13,8 @@ import { SocialMediaType } from '../types/post.enum';
 
 @Entity('posts')
 export class Post extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn({ type: 'varchar' })
+  id: string;
 
   @Column({
     type: 'enum',

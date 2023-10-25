@@ -13,7 +13,7 @@ export class Tag extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   tag: string;
 
   @ManyToMany(() => Post, { cascade: true })

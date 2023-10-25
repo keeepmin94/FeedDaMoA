@@ -10,6 +10,7 @@ import { AuthService } from './auth/auth.service';
 import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { AuthController } from './auth/auth.controller';
+import { StatisticsModule } from './statistics/statistics.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthController } from './auth/auth.controller';
     UserModule,
     PostModule,
     AuthModule,
+    StatisticsModule,
   ],
   controllers: [UserController, PostController, AuthController],
   providers: [PostService, UserService, AuthService],

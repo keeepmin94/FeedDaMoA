@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { CustomRepository } from "./decorator/typeorm-ex.decorator";
+import { CustomRepository } from "../common/decorator/typeorm-ex.decorator";
 import { User } from "./entities/user.entity";
 import { RegisterUserDto } from "./dto/registerUser.dto";
 import * as bcrypt from 'bcryptjs'

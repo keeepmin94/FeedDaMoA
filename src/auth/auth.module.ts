@@ -7,7 +7,7 @@ import * as config from 'config'
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
-import { TypeOrmExModule } from 'src/user/decorator/typeorm-ex.module';
+import { TypeOrmExModule } from '../common/decorator/typeorm-ex.module';
 
 const jwtConfig = config.get('jwt')
 

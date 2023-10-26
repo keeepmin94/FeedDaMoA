@@ -7,7 +7,7 @@ export class UserController {
     constructor(private userService: UserService){}
 
     @Post('/signup')
-    signUp(@Body(ValidationPipe) registerUserDto: RegisterUserDto): Promise<void> {
+    signUp(@Body(ValidationPipe) registerUserDto: RegisterUserDto): Promise<object> {
         return this.userService.signUp(registerUserDto)
     }
 }

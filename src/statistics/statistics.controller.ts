@@ -1,15 +1,17 @@
 import { Controller } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
-import { Get, Query, UsePipes } from '@nestjs/common';
+import { Get, Query } from '@nestjs/common';
 import { StatisticsCustomValidationPipe } from './pipes/statistics-custom-validation.pipe';
+import { StatisticsDto } from './dto/statistics.dto';
 
 @Controller('statistics')
 export class StatisticsController {
   constructor(private statisticsService: StatisticsService) {}
 
   @Get()
-  @UsePipes(new StatisticsCustomValidationPipe())
-  getTest(@Query() query) {
-    return query;
+  getStatisticsPost(
+    @Query(StatisticsCustomValidationPipe) statisticsDto: StatisticsDto,
+  ): Promise<{ date: string; cnt: number }[]> {
+    return this.statisticsService.getStatisticsPost(statisticsDto);
   }
 }

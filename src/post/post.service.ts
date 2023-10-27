@@ -17,6 +17,30 @@ export class PostService {
     private httpService: HttpService,
   ) {}
 
+  async getPosts(
+    hashTag: string,
+    type: string,
+    orderBy: string,
+    searchBy: string,
+    search: string,
+    pageCount: number,
+    page: number,
+  ): Promise<object> {
+    try {
+      console.log(hashTag);
+      if (!hashTag) {
+        hashTag = '여행'; //유저의 아이디로 변경필요
+        const result = await this.postRepository.findPostByHashtag(hashTag);
+        return { message: 'hashtag 검색에 성공했습니다.', result };
+      } else {
+        const result = await this.postRepository.findPostByHashtag(hashTag);
+        return { message: 'hashtag 검색에 성공했습니다.', result };
+      }
+    } catch (error) {
+      throw new InternalServerErrorException('hashtag 검색에 실패했습니다.');
+    }
+  }
+
   private async sendRequestToSns(
     id: string,
     type: string,

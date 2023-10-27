@@ -11,6 +11,7 @@ export class StatisticsCustomRepository extends Repository<Post> {
     statisticsDto: StatisticsDto,
   ): Promise<IStatisticsResult[]> {
     const { hashtag, type, start, end, value } = statisticsDto;
+
     const queryBuilder = this.createQueryBuilder('post').innerJoin(
       'post.tags',
       'tag',
@@ -19,17 +20,8 @@ export class StatisticsCustomRepository extends Repository<Post> {
     type === StatisticsType.DATE
       ? queryBuilder.select("TO_CHAR(post.created_at, 'YYYY-MM-DD') AS date")
       : queryBuilder.select(
-          "TO_CHAR(post.created_at, 'YYYY-MM-DD HH24') AS hour",
+          "TO_CHAR(post.created_at, 'YYYY-MM-DD HH24') AS date",
         );
-
-    // fix: Switch문이 더 좋은것 같아 수정
-    // value === StatisticsValue.COUNT
-    //   ? queryBuilder.addSelect('COUNT(*)', 'count')
-    //   : value === StatisticsValue.VIEW_COUNT
-    //   ? queryBuilder.addSelect('SUM(post.view_count)', 'count')
-    //   : value === StatisticsValue.LIKE_COUNT
-    //   ? queryBuilder.addSelect('SUM(post.like_count)', 'count')
-    //   : queryBuilder.addSelect('SUM(post.share_count)', 'count');
 
     switch (value) {
       case StatisticsValue.COUNT:
@@ -53,8 +45,7 @@ export class StatisticsCustomRepository extends Repository<Post> {
       .where('tag.tag = :hashtag', { hashtag })
       .andWhere('post.createdAt >= :start', { start })
       .andWhere('post.createdAt <= :end', { end })
-      .groupBy(`${type}`)
-      .orderBy(`${type}`);
+      .groupBy(`date`);
 
     const posts = await queryBuilder.getRawMany();
 

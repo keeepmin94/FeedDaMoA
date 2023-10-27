@@ -1,10 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { PostRepository } from './post.repository';
-import { PostDto } from './dto/returnPost.dto';
 
 @Injectable()
 export class PostService {
@@ -14,65 +17,73 @@ export class PostService {
     private httpService: HttpService,
   ) {}
 
-  async sendRequestToSns(id: string, type: string, action: string) {
-    let tld = ['facebook', 'instagram', 'twitter'].includes(type)
-      ? 'com'
-      : 'net';
-
-    const apiEndpoint = `https://www.${type}.${tld}/${action}/${id}`;
-    const response = await lastValueFrom(this.httpService.post(apiEndpoint));
-    if (response.status === 200) {
+  private async sendRequestToSns(
+    id: string,
+    type: string,
+    action: string,
+  ): Promise<number> {
+    try {
+      const tld = ['facebook', 'instagram', 'twitter'].includes(type)
+        ? 'com'
+        : 'net';
+      const apiEndpoint = `https://www.${type}.${tld}/${action}/${id}`;
+      const response = await lastValueFrom(this.httpService.post(apiEndpoint));
+      if (response.status !== 200) {
+        throw new Error(`Response status code : ${response.status}`);
+      }
       return response.status;
-    } else {
-      throw new Error(
-        `Failed to send SNS request for action ${action} with ID ${id}`,
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `${type}으로 post 요청을 보내는 데에 실패했습니다. ${error.message}`,
       );
     }
   }
 
-  async findPostById(id: string): Promise<PostDto> {
+  private async findPostById(id: string): Promise<Post> {
     const post: Post = await this.postRepository.findPostById(id);
     if (!post) {
       throw new NotFoundException(`해당 id의 게시글이 없습니다.`);
     }
-    const postDto: PostDto = {
-      id: post.id,
-      type: post.type,
-      title: post.title,
-      content: post.content,
-      viewCount: post.viewCount,
-      likeCount: post.likeCount,
-      shareCount: post.shareCount,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-      tags: post.tags.map((tag) => tag.tag),
-    };
 
-    return postDto;
+    return post;
   }
 
-  async updateCount(post, field: string): Promise<void> {
+  private async incrementCount(post, field: string): Promise<void> {
     post[field] += 1;
     await this.postRepository.save(post);
   }
 
-  async getPostDetail(id: string): Promise<PostDto> {
-    const post: PostDto = await this.findPostById(id);
-    await this.updateCount(post, 'viewCount');
-    return post;
+  private async processView(id: string): Promise<object> {
+    const post: Post = await this.findPostById(id);
+
+    await this.incrementCount(post, 'viewCount'); // api 요청 응답의 상태 코드가 200이면 likeCount + 1
+
+    const postTags = post.tags.map((tag) => tag.tag);
+    return { ...post, tags: postTags };
   }
 
-  async like(id: string): Promise<PostDto> {
-    const post: PostDto = await this.findPostById(id);
-    await this.sendRequestToSns(id, post.type, 'like');
-    await this.updateCount(post, 'likeCount'); // api 요청 응답의 상태 코드가 200이면 likeCount + 1
-    return post;
+  private async processLikeOrShare(
+    id: string,
+    action: string,
+  ): Promise<object> {
+    const post: Post = await this.findPostById(id);
+
+    await this.sendRequestToSns(id, post.type, action);
+    await this.incrementCount(post, `${action}Count`); // api 요청 응답의 상태 코드가 200이면 likeCount + 1
+
+    const postTags = post.tags.map((tag) => tag.tag);
+    return { ...post, tags: postTags };
   }
 
-  async share(id: string): Promise<PostDto> {
-    const post: PostDto = await this.findPostById(id);
-    await this.sendRequestToSns(id, post.type, 'share');
-    await this.updateCount(post, 'shareCount'); // api 요청 응답의 상태 코드가 200이면 likeCount + 1
-    return post;
+  async getPostDetail(id: string): Promise<object> {
+    return await this.processView(id);
+  }
+
+  async like(id: string): Promise<object> {
+    return await this.processLikeOrShare(id, 'like');
+  }
+
+  async share(id: string): Promise<object> {
+    return await this.processLikeOrShare(id, 'share');
   }
 }

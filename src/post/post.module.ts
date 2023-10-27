@@ -5,11 +5,13 @@ import { PostService } from './post.service';
 import { PostController } from './post.controller';
 import { TypeOrmExModule } from 'src/common/decorator/typeorm-ex.module';
 import { PostRepository } from './post.repository';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Post]),
     TypeOrmExModule.forCustomRepository([PostRepository]),
+    HttpModule,
   ],
   controllers: [PostController],
   providers: [PostService],

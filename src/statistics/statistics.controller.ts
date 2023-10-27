@@ -3,6 +3,7 @@ import { StatisticsService } from './statistics.service';
 import { Get, Query } from '@nestjs/common';
 import { StatisticsCustomValidationPipe } from './pipes/statistics-custom-validation.pipe';
 import { StatisticsDto } from './dto/statistics.dto';
+import { IStatisticsResult } from './type/statistics.interface';
 
 @Controller('statistics')
 export class StatisticsController {
@@ -11,7 +12,7 @@ export class StatisticsController {
   @Get()
   getStatisticsPost(
     @Query(StatisticsCustomValidationPipe) statisticsDto: StatisticsDto,
-  ): Promise<{ date: string; count: number }[]> {
+  ): Promise<IStatisticsResult[]> {
     return this.statisticsService.getStatisticsPost(statisticsDto);
   }
 }

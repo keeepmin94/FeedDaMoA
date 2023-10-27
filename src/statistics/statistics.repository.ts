@@ -3,12 +3,13 @@ import { CustomRepository } from '../common/decorator/typeorm-ex.decorator';
 import { Post } from 'src/post/entities/post.entity';
 import { StatisticsDto } from './dto/statistics.dto';
 import { StatisticsType, StatisticsValue } from './enums/statistics.enum';
+import { IStatisticsResult } from './type/statistics.interface';
 
 @CustomRepository(Post)
 export class StatisticsCustomRepository extends Repository<Post> {
   async getStatisticsPost(
     statisticsDto: StatisticsDto,
-  ): Promise<{ date: string; count: number }[]> {
+  ): Promise<IStatisticsResult[]> {
     const { hashtag, type, start, end, value } = statisticsDto;
     const queryBuilder = this.createQueryBuilder('post').innerJoin(
       'post.tags',

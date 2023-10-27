@@ -7,17 +7,17 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get(':id')
-  getPostDetail(@Param('id') id: string) {
-    return this.postService.getPostDetail(id);
+  async getPostDetail(@Param('id') id: string): Promise<object> {
+    return await this.postService.getPostDetail(id);
   }
 
   @Patch(':id/like')
-  patchLikeCount(@Param('id') id: string) {
-    return this.postService.like(id);
+  async patchLikeCount(@Param('id') id: string): Promise<object> {
+    return await this.postService.like(id);
   }
 
   @Patch(':id/share')
-  patchShareCount(@Param('id') id: string) {
-    return this.postService.share(id);
+  async patchShareCount(@Param('id') id: string): Promise<object> {
+    return await this.postService.share(id);
   }
 }

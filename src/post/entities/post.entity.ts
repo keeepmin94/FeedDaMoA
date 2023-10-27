@@ -44,7 +44,7 @@ export class Post extends BaseEntity {
   @UpdateDateColumn({ nullable: false })
   updatedAt: Date;
 
-  @ManyToMany(() => Tag, { cascade: true })
+  @ManyToMany(() => Tag)
   @JoinTable({
     name: 'post_tag',
     joinColumn: { name: 'post_id', referencedColumnName: 'id' },

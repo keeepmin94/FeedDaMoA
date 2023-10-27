@@ -39,7 +39,7 @@ export class StatisticsService {
       : queryBuilder.addSelect('SUM(post.share_count)', 'count');
 
     queryBuilder
-      .where('tag.name = :hashtag', { hashtag })
+      .where('tag.tag = :hashtag', { hashtag })
       .andWhere('post.createdAt >= :start', { start })
       .andWhere('post.createdAt <= :end', { end })
       .groupBy(`${type}`)

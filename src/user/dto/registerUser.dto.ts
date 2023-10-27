@@ -6,6 +6,7 @@ import {
   IsEmail,
 } from 'class-validator';
 
+// 회원가입 DTO
 export class RegisterUserDto {
   @IsString()
   @MinLength(4)

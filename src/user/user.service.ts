@@ -10,6 +10,7 @@ export class UserService {
     private userRepository: UserRepository,
   ) {}
 
+  // 회원가입
   async signUp(registerUserDto: RegisterUserDto): Promise<object> {
     try {
       await this.userRepository.createUser(registerUserDto);

@@ -81,9 +81,9 @@ export class StatisticsCustomValidationPipe implements PipeTransform {
     // const { type, start, end, value } = value_;
     const type = value_.type;
     const start = value_.start === '' ? this.getOneSomeDate(7) : value_.start;
-    const end = value_.end === '' ? this.getOneSomeDate(0) : value_.start;
+    const end = value_.end === '' ? this.getOneSomeDate(0) : value_.end;
     const value = value_.value === '' ? 'count' : value_.value;
-
+    
     // 비어있는 Param들 여기서 default값 주는게 맞을까?
 
     // type ==> [date, hour] 중에 하나인지 확인

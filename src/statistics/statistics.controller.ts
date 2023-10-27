@@ -11,7 +11,7 @@ export class StatisticsController {
   @Get()
   getStatisticsPost(
     @Query(StatisticsCustomValidationPipe) statisticsDto: StatisticsDto,
-  ): Promise<{ date: string; cnt: number }[]> {
+  ): Promise<{ date: string; count: number }[]> {
     return this.statisticsService.getStatisticsPost(statisticsDto);
   }
 }

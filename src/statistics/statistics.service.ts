@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { StatisticsCustomRepository } from './statistics.repository';
 import { IStatisticsResult } from './type/statistics.interface';
 import { StatisticsType } from './enums/statistics.enum';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class StatisticsService {
@@ -14,8 +15,10 @@ export class StatisticsService {
 
   async getStatisticsPost(
     statisticsDto: StatisticsDto,
+    user: User,
   ): Promise<IStatisticsResult[]> {
-    // TODO: hashtag === '' ? 토큰으로 유저 계정 찾기 : hashtag
+    statisticsDto.hashtag =
+      statisticsDto.hashtag === '' ? user.username : statisticsDto.hashtag;
 
     const { type, start, end } = statisticsDto;
 
@@ -35,10 +38,9 @@ export class StatisticsService {
   ): IStatisticsResult[] {
     const allDays = [];
     const currentDate = new Date(start); // Date 타입 깊은 복사
-    const endDate = new Date(end); //end도 date 타입인데 왜 string으로 들어오는지... todo: fix
 
     // 조회시작 날짜부터 종료날짜까지 (하루하루|매시간) 배열에 (yyyy-MM-dd|yyyy-MM-dd HH) 형식으로 넣어주기
-    while (currentDate <= endDate) {
+    while (currentDate <= end) {
       const pushDate =
         type === StatisticsType.DATE
           ? currentDate.toISOString().split('T')[0]

@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as config from 'config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,12 @@ async function bootstrap() {
 
   const serverConfig = config.get('server');
   const port = serverConfig.port;
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    }),
+  );
   await app.listen(port);
   Logger.log(`Application running on port ${port}`);
 }

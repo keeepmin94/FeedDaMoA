@@ -8,6 +8,7 @@ import { Post } from './entities/post.entity';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { PostRepository } from './post.repository';
+import { PostDto } from './dto/post.dto';
 
 @Injectable()
 export class PostService {
@@ -17,27 +18,14 @@ export class PostService {
     private httpService: HttpService,
   ) {}
 
-  async getPosts(
-    hashTag: string,
-    type: string,
-    orderBy: string,
-    searchBy: string,
-    search: string,
-    pageCount: number,
-    page: number,
-  ): Promise<object> {
+  async getPosts(postDto: PostDto): Promise<object> {
     try {
-      console.log(hashTag);
-      if (!hashTag) {
-        hashTag = '여행'; //유저의 아이디로 변경필요
-        const result = await this.postRepository.findPostByHashtag(hashTag);
-        return { message: 'hashtag 검색에 성공했습니다.', result };
-      } else {
-        const result = await this.postRepository.findPostByHashtag(hashTag);
-        return { message: 'hashtag 검색에 성공했습니다.', result };
-      }
+      console.log(postDto);
+      const result = await this.postRepository.findPostByTag(postDto);
+      // console.log(result);
+      return { message: '조건 검색에 성공했습니다.', result };
     } catch (error) {
-      throw new InternalServerErrorException('hashtag 검색에 실패했습니다.');
+      throw new InternalServerErrorException('조건 검색에 실패했습니다.');
     }
   }
 

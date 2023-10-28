@@ -1,6 +1,7 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Query, Param, Patch } from '@nestjs/common';
 import { PostService } from './post.service';
-import { Get, Query, Param, Patch } from '@nestjs/common/decorators';
+import { PostValidationPipe } from './pipes/postValidation.pipe';
+import { PostDto } from './dto/post.dto';
 
 @Controller('posts')
 export class PostController {
@@ -10,25 +11,10 @@ export class PostController {
   // 검색 + 타입 + 정렬
   // 검색 + 타입
   @Get()
-  async getPosts(
-    @Query('hashtag') hashTag: string,
-    @Query('type') type: string,
-    @Query('order_by') orderBy: string,
-    @Query('search_by') searchBy: string,
-    @Query('search') search: string,
-    @Query('page_count') pageCount: number,
-    @Query('page') page: number,
-  ): Promise<object> {
-    console.log(hashTag);
-    return await this.postService.getPosts(
-      hashTag,
-      type,
-      orderBy,
-      searchBy,
-      search,
-      pageCount,
-      page,
-    );
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  async getPosts(@Query(PostValidationPipe) postDto: PostDto): Promise<object> {
+    // console.log(postDto, typeof postDto.pageCount);
+    return await this.postService.getPosts(postDto);
   }
 
   @Get(':id')

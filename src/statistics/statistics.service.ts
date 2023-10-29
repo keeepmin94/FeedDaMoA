@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { StatisticsDto } from './dto/statistics.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StatisticsCustomRepository } from './statistics.repository';
@@ -21,12 +21,15 @@ export class StatisticsService {
       statisticsDto.hashtag === '' ? user.username : statisticsDto.hashtag;
 
     const { type, start, end } = statisticsDto;
+    try {
+      const result =
+        await this.statisticsCustomRepository.getStatisticsPost(statisticsDto);
 
-    const result =
-      await this.statisticsCustomRepository.getStatisticsPost(statisticsDto);
-
-    const resultWithZero = this.makeWithZeroCount(result, start, end, type);
-    return resultWithZero;
+      const resultWithZero = this.makeWithZeroCount(result, start, end, type);
+      return resultWithZero;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   // DB에서 받아온 데이터를 가공해 count가 없는 날짜에 count: 0 넣기

@@ -24,7 +24,7 @@ export class PostValidationPipe implements PipeTransform {
       hashtag: '성수맛집', //추후 본인계정으로 수정 ,거기에 넣어야쥐
       orderBy: 'created_at', // 기본 정렬 기준을 생성일자로 설정
       orderDirection: 'DESC', // 기본 정렬을 내림차순 정렬
-      searchBy: 'title, content', // 기본 검색 기준을 제목 + 내용으로 설정
+      searchBy: 'title,content', // 기본 검색 기준을 제목 + 내용으로 설정
       pageCount: 10, // 기본 페이지 개수를 10으로 설정
       page: 1, // 기본 페이지 번호를 1로 설정
     };

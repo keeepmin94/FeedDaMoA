@@ -7,10 +7,10 @@ import { ApiOperation, ApiParam } from '@nestjs/swagger';
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
-
   // 해시태그(디폴트:유저 계정) + 타입 + 정렬
   // 검색 + 타입 + 정렬
   // 검색 + 타입
+  @ApiOperation({ summary: 'post 목록 반환' })
   @Get()
   // @UsePipes(new ValidationPipe({ transform: true }))
   async getPosts(@Query(PostValidationPipe) postDto: PostDto): Promise<object> {
@@ -18,7 +18,7 @@ export class PostController {
     return await this.postService.getPosts(postDto);
   }
 
-  @ApiOperation({ summary: 'post의 모든 필드 반환' })
+  @ApiOperation({ summary: '개별 post의 모든 필드 반환' })
   @ApiParam({ name: 'id', description: 'Post ID' })
   @Get(':id')
   async getPostDetail(@Param('id') id: string): Promise<object> {

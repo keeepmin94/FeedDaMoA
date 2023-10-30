@@ -75,8 +75,32 @@ To run tests, run the following command
 
 <details>
 <summary> 파일 구조 보기 </summary>
-  
-![directory](https://file.notion.so/f/f/2a662053-a8a0-4ccc-ada8-bf207db4b34c/3dc2b5e3-2ee3-4a99-a56f-6af0b1f7c80c/Untitled.png?id=80c4bf37-7758-4c8c-8259-a86050fb3968&table=block&spaceId=2a662053-a8a0-4ccc-ada8-bf207db4b34c&expirationTimestamp=1698732000000&signature=1wQ5HYuNGy3Kpl66UFXajltq7lgCaaj6XgZ0-vxXVHM&downloadName=Untitled.png)
+
+```
+src
+├─auth
+│  ├─decorator
+│  ├─dto
+│  └─test
+├─common
+│  └─decorator
+├─configs
+├─post
+│  ├─dto
+│  ├─entities
+│  ├─pipes
+│  ├─test
+│  └─types
+├─statistics
+│  ├─dto
+│  ├─enums
+│  ├─pipes
+│  └─type
+└─user
+    ├─dto
+    ├─entities
+    └─test
+```
 
 </details>
 </br>

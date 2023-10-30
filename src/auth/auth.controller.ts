@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  HttpCode,
   Post,
   Req,
   UseGuards,
@@ -18,6 +19,7 @@ export class AuthController {
 
   // 로그인
   @Post('/login')
+  @HttpCode(200)
   logIn(
     @Body(ValidationPipe) logInDto: LogInDto,
   ): Promise<{ accessToken: string }> {
@@ -26,6 +28,7 @@ export class AuthController {
 
   // 인증코드 이메일로 보내기
   @Post('/verify-email')
+  @HttpCode(200)
   @UseGuards(AuthGuard())
   sendCode(@GetUser() user: User): Promise<void> {
     return this.authService.sendVerificationCode(user);
@@ -33,6 +36,7 @@ export class AuthController {
 
   // 인증코드 확인
   @Post('/confirmcode')
+  @HttpCode(200)
   @UseGuards(AuthGuard())
   confirmCode(
     @Body('verificationCode') verificationCode: string,

@@ -14,7 +14,6 @@ export class PostController {
   @Get()
   // @UsePipes(new ValidationPipe({ transform: true }))
   async getPosts(@Query(PostValidationPipe) postDto: PostDto): Promise<object> {
-    // console.log(postDto, typeof postDto.pageCount);
     return await this.postService.getPosts(postDto);
   }
 

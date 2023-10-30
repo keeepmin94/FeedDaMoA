@@ -2,7 +2,6 @@ import { Brackets, Repository } from 'typeorm';
 import { CustomRepository } from '../common/decorator/typeorm-ex.decorator';
 import { Post } from './entities/post.entity';
 import { PostDto } from './dto/post.dto';
-// import { Tag } from './entities/tag.entity';
 
 @CustomRepository(Post)
 export class PostRepository extends Repository<Post> {
@@ -48,7 +47,6 @@ export class PostRepository extends Repository<Post> {
         }),
       );
     }
-    // console.log(queryBuilder.getQuery());
     let orderByColumn = [
       'updated_at',
       'like_count',

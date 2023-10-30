@@ -19,7 +19,6 @@ export class PostValidationPipe implements PipeTransform {
   transform(value_: any, metadata: ArgumentMetadata) {
     if (metadata.type !== 'query') throw new Error('잘못된 파라미터 입니다.');
     // 쿼리 매개변수에 대한 기본값 설정
-    // console.log(value_, metatype);
     const defaultValue = {
       hashtag: '성수맛집', //추후 본인계정으로 수정 ,거기에 넣어야쥐
       orderBy: 'created_at', // 기본 정렬 기준을 생성일자로 설정
@@ -45,7 +44,6 @@ export class PostValidationPipe implements PipeTransform {
     value_.pageCount = +value_.pageCount;
     value_.page = +value_.page;
 
-    // console.log(typeof value_.page);
     if (value_.type && !this.valueOptions.includes(value_.type)) {
       throw new BadRequestException('올바른 type이 아닙니다.');
     }

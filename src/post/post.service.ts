@@ -20,9 +20,7 @@ export class PostService {
 
   async getPosts(postDto: PostDto): Promise<object> {
     try {
-      console.log(postDto);
       const result = await this.postRepository.findPostByTag(postDto);
-      // console.log(result);
       return { message: '조건 검색에 성공했습니다.', result };
     } catch (error) {
       throw new InternalServerErrorException('조건 검색에 실패했습니다.');

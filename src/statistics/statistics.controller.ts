@@ -4,7 +4,7 @@ import { Get, Query } from '@nestjs/common';
 import { StatisticsCustomValidationPipe } from './pipes/statistics-custom-validation.pipe';
 import { StatisticsDto } from './dto/statistics.dto';
 import { IStatisticsResult } from './type/statistics.interface';
-import { GetUser } from 'src/user/decorator/get-user.decorator';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/user/entities/user.entity';

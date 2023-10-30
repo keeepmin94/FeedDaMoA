@@ -95,7 +95,7 @@ To run tests, run the following command
 <img src="./public/statistics.png" alt="logo" width="80%" />
 <img src="./public/user_signup.png" alt="logo" width="80%" />
 <img src="./public/auth_login.png" alt="logo" width="80%" />
-<img src="./public/autn_verify.png" alt="logo" width="80%" />
+<img src="./public/auth_verify.png" alt="logo" width="80%" />
 <img src="./public/auth_confirmcode.png" alt="logo" width="80%" />
 
 </details>

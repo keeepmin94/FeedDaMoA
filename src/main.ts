@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as config from 'config';
 import { ValidationPipe } from '@nestjs/common';
@@ -27,6 +27,16 @@ async function bootstrap() {
     }),
   );
   await app.listen(port);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      // transformOptions: {
+      //   enableImplicitConversion: true,
+      // },
+      skipMissingProperties: true,
+    }),
+  );
   Logger.log(`Application running on port ${port}`);
 }
 bootstrap();

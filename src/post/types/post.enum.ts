@@ -1,4 +1,4 @@
-export enum SocialMediaType {
+export enum SnsType {
   Facebook = 'facebook',
   Instagram = 'instagram',
   Twitter = 'twitter',

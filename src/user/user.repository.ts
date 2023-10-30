@@ -10,6 +10,7 @@ import {
 
 @CustomRepository(User)
 export class UserRepository extends Repository<User> {
+  // 유저 생성
   async createUser(registerUserDto: RegisterUserDto): Promise<void> {
     const { username, email, password, verificationCode, isVerified } =
       registerUserDto;
@@ -31,49 +32,41 @@ export class UserRepository extends Repository<User> {
       if (error.code === '23505') {
         throw new ConflictException('존재하는 유저 이름입니다.');
       }
-      throw new InternalServerErrorException('회원가입에 실패한 것인가!!!!');
+      throw new InternalServerErrorException('회원가입에 실패하였습니다.');
     }
   }
 
+  // username으로 유저 찾기
   async findByUsername(username: string): Promise<User> {
     const user = await this.findOne({ where: { username } });
 
     return user;
   }
 
+  // id로 유저 찾기
   async findById(id: number): Promise<User> {
     const user = await this.findOne({ where: { id } });
 
     return user;
   }
 
+  // 가입 승인
   async isVerfied(verificationCode: string, user: User): Promise<void> {
-    try {
-      user.verificationCode = verificationCode;
-      user.isVerified = true;
+    user.verificationCode = verificationCode;
+    user.isVerified = true;
 
-      await this.save(user);
-    } catch (error) {
-      throw new InternalServerErrorException(
-        '인증 코드 확인 중 오류가 발생했습니다.',
-      );
-    }
+    await this.save(user);
   }
 
+  // 인증코드 제거
   async clearVerificationCode(
     email: string,
     verificationCode: string,
   ): Promise<void> {
-    try {
-      const user = await this.findOne({ where: { email, verificationCode } });
+    const user = await this.findOne({ where: { email, verificationCode } });
 
-      user.verificationCode = '';
+    user.verificationCode = '';
 
-      await this.save(user);
-    } catch (error) {
-      throw new InternalServerErrorException(
-        '인증 코드 제거 중 오류가 발생했습니다.',
-      );
-    }
+    await this.save(user);
   }
 }

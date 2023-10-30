@@ -11,12 +11,20 @@ async function bootstrap() {
     .setTitle('social')
     .setDescription('The social API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .addTag('user')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('swagger', app, document);
 
   const serverConfig = config.get('server');
   const port = serverConfig.port;
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    }),
+  );
   await app.listen(port);
   app.useGlobalPipes(
     new ValidationPipe({

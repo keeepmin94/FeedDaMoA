@@ -1,10 +1,19 @@
-import { Controller, Get, Query, Param, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Param,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostValidationPipe } from './pipes/postValidation.pipe';
 import { PostDto } from './dto/post.dto';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('posts')
+@UseGuards(AuthGuard())
 export class PostController {
   constructor(private readonly postService: PostService) {}
   // 해시태그(디폴트:유저 계정) + 타입 + 정렬

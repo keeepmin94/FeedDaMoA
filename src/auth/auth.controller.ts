@@ -3,7 +3,6 @@ import {
   Controller,
   HttpCode,
   Post,
-  Req,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';

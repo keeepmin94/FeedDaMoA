@@ -16,7 +16,7 @@ export class Tag extends BaseEntity {
   @Column({ type: 'varchar', unique: true })
   tag: string;
 
-  @ManyToMany(() => Post, { cascade: true })
+  @ManyToMany(() => Post)
   @JoinTable({
     name: 'post_tag',
     joinColumn: { name: 'tag_id', referencedColumnName: 'id' },

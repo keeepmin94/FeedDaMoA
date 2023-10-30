@@ -9,7 +9,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Tag } from './tag.entity';
-import { SocialMediaType } from '../types/post.enum';
+import { SnsType } from '../types/post.enum';
 
 @Entity('posts')
 export class Post extends BaseEntity {
@@ -18,10 +18,10 @@ export class Post extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: SocialMediaType,
-    default: SocialMediaType.Facebook, // 선택적으로 기본값 설정
+    enum: SnsType,
+    default: SnsType.Facebook, // 선택적으로 기본값 설정
   })
-  type: SocialMediaType;
+  type: SnsType;
 
   @Column({ type: 'varchar', length: 30, nullable: false })
   title: string;
@@ -44,7 +44,7 @@ export class Post extends BaseEntity {
   @UpdateDateColumn({ nullable: false })
   updatedAt: Date;
 
-  @ManyToMany(() => Tag, { cascade: true })
+  @ManyToMany(() => Tag)
   @JoinTable({
     name: 'post_tag',
     joinColumn: { name: 'post_id', referencedColumnName: 'id' },

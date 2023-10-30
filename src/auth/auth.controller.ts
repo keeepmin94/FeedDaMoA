@@ -3,7 +3,6 @@ import {
   Controller,
   HttpCode,
   Post,
-  Req,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -12,12 +11,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './decorator/get-user.decorator';
 import { User } from '../user/entities/user.entity';
 import { LogInDto } from './dto/login.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('인증')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  // 로그인
+  @ApiOperation({ summary: '로그인' })
   @Post('/login')
   @HttpCode(200)
   logIn(
@@ -26,7 +27,10 @@ export class AuthController {
     return this.authService.logIn(logInDto);
   }
 
-  // 인증코드 이메일로 보내기
+  @ApiOperation({
+    summary: '인증 메일',
+    description: '유저의 이메일로 인증 메일을 보냅니다.',
+  })
   @Post('/verify-email')
   @HttpCode(200)
   @UseGuards(AuthGuard())
@@ -34,7 +38,7 @@ export class AuthController {
     return this.authService.sendVerificationCode(user);
   }
 
-  // 인증코드 확인
+  @ApiOperation({ summary: '유저 인증코드 확인' })
   @Post('/confirmcode')
   @HttpCode(200)
   @UseGuards(AuthGuard())

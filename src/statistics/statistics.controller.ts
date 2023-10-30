@@ -28,7 +28,7 @@ export class StatisticsController {
   })
   @ApiQuery({
     name: 'hashtag',
-    required: true,
+    required: false,
     description: '검색할 해시태그',
   })
   @ApiQuery({
@@ -38,17 +38,17 @@ export class StatisticsController {
   })
   @ApiQuery({
     name: 'start',
-    required: true,
+    required: false,
     description: '조회 시작일',
   })
   @ApiQuery({
     name: 'end',
-    required: true,
+    required: false,
     description: '조회 종료일',
   })
   @ApiQuery({
     name: 'value',
-    required: true,
+    required: false,
     description: '조회할 목록',
   })
   @ApiBearerAuth()

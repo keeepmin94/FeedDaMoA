@@ -81,9 +81,18 @@ export class StatisticsCustomValidationPipe implements PipeTransform {
       throw new BadRequestException('query 파라미터로 입력해주세요');
 
     const type = value_.type;
-    const start = value_.start === '' ? this.getOneSomeDate(7) : value_.start;
-    const end = value_.end === '' ? this.getOneSomeDate(0) : value_.end;
-    const value = value_.value === '' ? 'count' : value_.value;
+    const start =
+      value_.start === undefined || value_.start === ''
+        ? this.getOneSomeDate(7)
+        : value_.start;
+    const end =
+      value_.end === undefined || value_.end === ''
+        ? this.getOneSomeDate(0)
+        : value_.end;
+    const value =
+      value_.value === undefined || value_.value === ''
+        ? 'count'
+        : value_.value;
 
     // type ==> [date, hour] 중에 하나인지 확인
     if (!this.isOptionValid(type.toUpperCase(), 'type'))

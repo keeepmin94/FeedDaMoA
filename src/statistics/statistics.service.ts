@@ -18,7 +18,9 @@ export class StatisticsService {
     user: User,
   ): Promise<IStatisticsResult[]> {
     statisticsDto.hashtag =
-      statisticsDto.hashtag === '' ? user.username : statisticsDto.hashtag;
+      statisticsDto.hashtag === '' || statisticsDto.hashtag === undefined
+        ? user.username
+        : statisticsDto.hashtag;
 
     const { type, start, end } = statisticsDto;
     try {

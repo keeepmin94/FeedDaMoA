@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { StatisticsType, StatisticsValue } from '../enums/statistics.enum';
-import { IsString } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class StatisticsDto {
   @ApiProperty({ example: '성수맛집', description: '해시태그', required: true })
-  @IsString()
+  @IsOptional()
   hashtag: string;
   @ApiProperty({
     example: 'date',
@@ -18,14 +18,14 @@ export class StatisticsDto {
     description: '조회 시작일',
     required: true,
   })
-  @IsString()
+  @IsOptional()
   start: Date;
   @ApiProperty({
     example: '2023-10-29',
     description: '조회 종료일',
     required: true,
   })
-  @IsString()
+  @IsOptional()
   end: Date;
   @ApiProperty({
     example: 'count',
@@ -33,6 +33,6 @@ export class StatisticsDto {
       '통계로 가져올 목록 (count | like_count | view_count | share_count)',
     required: true,
   })
-  @IsString()
+  @IsOptional()
   value: StatisticsValue;
 }

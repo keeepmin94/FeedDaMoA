@@ -12,7 +12,6 @@
 - [개요](#개요)
 - [Skils](#skils)
 - [Installation](#Installation)
-- [Running Tests](#running-tests)
 - [API Reference](#api-reference)
 - [프로젝트 진행 및 이슈 관리](#프로젝트-진행-및-이슈-관리)
 - [구현과정(설계 및 의도)](<#구현과정(설계-및-의도)>)
@@ -56,18 +55,6 @@ Install FeeDaMoA with npm
   npm install
 
 ```
-
-<br/>
-
-## Running Tests
-
-To run tests, run the following command
-
-```bash
-  npm run test --coverage
-```
-
-> Coverage ScreenShot ![Static Badge](https://img.shields.io/badge/Test_Passed-20/20-green) > ![coverage](https://user-images.githubusercontent.com/48683566/56673924-0b84ae00-66b1-11e9-93ac-fb76ff96a5a0.png)
 
 <br/>
 

@@ -1,7 +1,8 @@
-import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import * as config from 'config'
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import * as config from 'config';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-const dbConfig = config.get('db')
+const dbConfig = config.get('db');
 
 export const typeORMConfig: TypeOrmModuleOptions = {
   type: dbConfig.type,
@@ -11,5 +12,7 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   password: process.env.RDS_PASSWORD || dbConfig.password,
   database: process.env.RDS_DATABASE || dbConfig.database,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  synchronize: dbConfig.synchronize
-}
+  synchronize: dbConfig.synchronize,
+  namingStrategy: new SnakeNamingStrategy(),
+  // logging: true,
+};

@@ -9,6 +9,7 @@ import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { PostRepository } from './post.repository';
 import { PostDto } from './dto/post.dto';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class PostService {
@@ -18,10 +19,32 @@ export class PostService {
     private httpService: HttpService,
   ) {}
 
-  async getPosts(postDto: PostDto): Promise<object> {
+  async getPosts(postDto: PostDto, user: User): Promise<object> {
     try {
+      if (!postDto.hashtag) {
+        postDto.hashtag = user.username;
+      }
+
       const result = await this.postRepository.findPostByTag(postDto);
-      return { message: '조건 검색에 성공했습니다.', result };
+
+      const processedPosts = result.posts.map((post) => ({
+        아이디: post.id,
+        SNS계정: post.type,
+        제목: post.title,
+        내용: post.content,
+        조회수: post.viewCount,
+        좋아요수: post.likeCount,
+        공유된수: post.shareCount,
+        해시태그: post.tags.map((tag) => tag.tag).join(', '), // 여러 태그를 쉼표로 구분
+      }));
+
+      // 객체로 내보내기
+      const response = {
+        message: '조건 검색에 성공했습니다.',
+        posts: processedPosts,
+      };
+
+      return response;
     } catch (error) {
       throw new InternalServerErrorException('조건 검색에 실패했습니다.');
     }
